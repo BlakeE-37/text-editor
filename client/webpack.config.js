@@ -21,32 +21,47 @@ module.exports = () => {
     plugins: [
       new HtmlWebpackPlugin({
         template: './index.html',
-        title: 'WebPack'
+        title: 'Text Editor'
       }),
       new InjectManifest({
         swSrc: './src-sw.js',
         swDest: 'service-worker.js',
       }),
       new MiniCssExtractPlugin(),
+
+      new WebpackPwaManifest({
+        name: 'Text Editor',
+        short_name: 'JATE',
+        description: 'Edit code in a cool offline editor',
+        background_color: '#303030',
+        theme_color: '#102E4A',
+        start_url: './',
+        publicPath: './',
+        icons: [
+          {
+            src: path.resolve('./favicon.ico'),
+            sizes: [96, 128, 192, 256, 384, 512],
+            destination: path.join('assets', 'icons'),
+          },
+        ],
+      }),
+
     ],
 
     module: {
       rules: [
         {
           test: /\.css$/i,
-          use: [MiniCssExtractPlugin.loader, 'css-loader'],
-        },
-        {
-          test: /\.(png|svg|jpg|jpeg|gif)$/i,
-          type: 'asset/resource',
+          use: ['style-loader', 'css-loader'],
         },
         {
           test: /\.m?js$/,
-          exclude: /(node_modules|bower_components)/,
+          exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env'],
+              plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/transform-runtime'],
             },
           },
         },
