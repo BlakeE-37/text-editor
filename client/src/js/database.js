@@ -22,7 +22,7 @@ export const putDb = async (content) => {
 
   // open the object store and add content
   const objStore = transaction.objectStore('jate');
-  const request = objStore.add({ content });
+  const request = objStore.add({ jate: content });
 
   // Get confirmation of the request.
   const result = await request;
